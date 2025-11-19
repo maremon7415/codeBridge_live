@@ -1,10 +1,8 @@
 import dotenv from "dotenv";
-dotenv.config();
-
-export const PORT = process.env.PORT;
-export const MONGODB_URI = process.env.MONGODB_URI;
+dotenv.config({ quiet: true });
 
 export const env = {
-  port: PORT,
-  mongodbURI: MONGODB_URI,
+  port: process.env.PORT,
+  mongodbURI: process.env.MONGODB_URI,
+  node: process.env.NODE,
 };
