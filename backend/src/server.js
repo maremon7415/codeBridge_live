@@ -32,6 +32,10 @@ if (env.node === "production") {
   });
 }
 
+app.get("/health", (req, res) => {
+  res.send("OK");
+});
+
 // (if in production) it wasn't a static file or frontend route.
 app.use((req, res, next) => {
   res.status(404).json({ error: "Not found" });
