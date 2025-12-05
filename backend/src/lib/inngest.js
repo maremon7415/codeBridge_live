@@ -2,14 +2,21 @@ import { Inngest } from "inngest";
 import { connectDB } from "./db.js";
 import User from "../models/User.js";
 
+// Initialize Inngest Client
 export const inngest = new Inngest({ id: "codebridge" });
 
+// Function 1: Sync User
 const syncUser = inngest.createFunction(
+  // 1. Config (ID & Name)
   {
     id: "sync-user",
     name: "Sync user on Clerk create",
+  },
+  // 2. Trigger (When it runs)
+  {
     event: "clerk/user.created",
   },
+  // 3. Handler (The Code)
   async ({ event }) => {
     try {
       await connectDB();
@@ -46,12 +53,18 @@ const syncUser = inngest.createFunction(
   }
 );
 
+// Function 2: Delete User
 const deleteUser = inngest.createFunction(
+  // 1. Config
   {
     id: "delete-user-from-db",
     name: "Delete user on Clerk delete",
+  },
+  // 2. Trigger
+  {
     event: "clerk/user.deleted",
   },
+  // 3. Handler
   async ({ event }) => {
     try {
       await connectDB();
@@ -74,4 +87,5 @@ const deleteUser = inngest.createFunction(
   }
 );
 
+// Export functions for the API route to use
 export const functions = [syncUser, deleteUser];
