@@ -5,7 +5,8 @@ import cors from "cors";
 import { serve } from "inngest/express";
 import { functions, inngest } from "./lib/inngest.js";
 import { clerkMiddleware } from "@clerk/express";
-import { protectRoute } from "./middleware/protectRoute.js";
+import chatRoutes from "./routes/chatRoutes.js";
+import sessionRoutes from "./routes/sessionRoutes.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
   res.send("Api is working");
 });
 app.use("api/chat", chatRoutes);
+app.use("/api/session", sessionRoutes);
 
 // Inngest Route
 app.use("/api/inngest", serve({ client: inngest, functions }));
