@@ -30,13 +30,7 @@ const Navbar = () => {
 
         {/* Auth Button */}
         <SignInButton mode="modal">
-          <button
-            className="group relative inline-flex items-center gap-2 rounded-lg
-                      border border-primary/80 bg-base-100/90 cursor-pointer
-                       px-6 py-2.5 font-semibold text-base-content
-                       shadow-sm transition-all duration-300
-                       hover:scale-105 hover:shadow-lg"
-          >
+          <button className="btn btn-primary btn-lg">
             <span className="relative z-10 flex items-center gap-2">
               Get Started
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1.5" />
