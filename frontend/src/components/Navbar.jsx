@@ -1,18 +1,21 @@
-import { SignInButton } from "@clerk/clerk-react";
-import { ArrowRight, MonitorCloud } from "lucide-react";
-import { Link } from "react-router";
+import { SignInButton, useUser, UserButton } from "@clerk/clerk-react";
+import { ArrowRight, MonitorCloud, LayoutDashboard, Code2 } from "lucide-react";
+import { Link, useLocation } from "react-router";
 
 const Navbar = () => {
+  const { pathname } = useLocation();
+  const { isSignedIn } = useUser();
+
   return (
-    <nav className="sticky top-0 z-50 border-b border-primary/20 bg-base-100/70 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b border-base-300/50 bg-base-100/80 backdrop-blur-lg">
       <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link
-          to="/"
+          to={isSignedIn ? "/dashboard" : "/"}
           title="Go to home"
-          className="group flex items-center gap-3 transition-transform duration-300 hover:scale-[1.03]"
+          className="group flex items-center gap-3 transition-all duration-300 hover:opacity-90"
         >
-          <div className="relative rounded-xl bg-gradient-to-br from-primary via-secondary to-accent p-[2px] shadow-md">
+          <div className="relative rounded-xl bg-gradient-to-br from-primary via-secondary to-accent p-[2px] shadow-lg shadow-primary/20">
             <div className="rounded-lg bg-base-100 p-2">
               <MonitorCloud className="w-6 h-6 text-primary transition-transform duration-300 group-hover:scale-110" />
             </div>
@@ -28,21 +31,55 @@ const Navbar = () => {
           </div>
         </Link>
 
-        {/* Auth Button */}
-        <SignInButton mode="modal">
-          <button className="btn btn-primary btn-lg">
-            <span className="relative z-10 flex items-center gap-2">
-              Get Started
-              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1.5" />
-            </span>
+        {/* Conditional Buttons */}
+        <div className="flex items-center gap-4">
+          {pathname === "/" ? (
+            <SignInButton mode="modal">
+              <button className="btn btn-primary btn-md gap-2 shadow-lg shadow-primary/30 group transition-all hover:scale-[1.02]">
+                <span className="relative z-10 flex items-center gap-2">
+                  Get Started
+                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </button>
+            </SignInButton>
+          ) : (
+            <>
+              {isSignedIn && (
+                <div className="flex items-center gap-3">
+                  <Link
+                    to="/problems"
+                    className={`btn font-medium gap-2 text-primary bg-base-200/50 ${
+                      pathname === "/problems" ? "btn-accent" : ""
+                    }`}
+                  >
+                    <Code2 className="w-4 h-4" />
+                    Problems
+                  </Link>
 
-            {/* subtle hover overlay */}
-            <span
-              aria-hidden
-              className="absolute inset-0 rounded-lg bg-base-100/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            />
-          </button>
-        </SignInButton>
+                  <Link
+                    to="/dashboard"
+                    className={`btn font-medium gap-2 text-primary bg-base-200/50 ${
+                      pathname === "/dashboard" ? "btn-accent" : ""
+                    }`}
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+
+                  <div className="pl-2 border-l border-base-300">
+                    <UserButton
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-9 h-9 border border-base-300",
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );

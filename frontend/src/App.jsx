@@ -18,7 +18,10 @@ const App = () => {
     <>
       <Routes>
         {/* Home - public page */}
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={!isSignedIn ? <HomePage /> : <Navigate to="/dashboard" />}
+        />
 
         {/* Dashboard - protected (signed-in users only) */}
         <Route
